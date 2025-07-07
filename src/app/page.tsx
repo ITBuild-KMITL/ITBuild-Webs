@@ -6,12 +6,10 @@ import Register from "./_components/Register";
 import UserCard from "./_components/UserCard";
 
 export default function Home() {
-  const { useSession, signOut } = authClient;
+  const { useSession } = authClient;
   const {
     data: session,
-    isPending, //loading state
-    error, //error object
-    refetch, //refetch the session
+    isPending,
   } = useSession();
 
   return (
