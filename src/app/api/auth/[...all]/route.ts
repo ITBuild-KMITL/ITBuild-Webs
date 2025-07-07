@@ -5,6 +5,6 @@ import { getCloudflareContext } from "@opennextjs/cloudflare"
 const { env} = getCloudflareContext();
 
 
-export const { POST, GET } = toNextJsHandler(auth(env));
+export const { POST, GET } = toNextJsHandler(auth);
 
 export const runtime = "edge"; // Use edge runtime for Cloudflare Workers

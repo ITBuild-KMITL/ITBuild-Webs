@@ -19,7 +19,8 @@ import { useState } from "react";
 import { CircleQuestionMark, DoorClosedLocked, DoorOpen } from "lucide-react";
 
 export default function SignIn() {
-  const { signIn } = authClient;
+
+  const { signIn } = authClient
 
   const [policyAccepted, setPolicyAccepted] = useState(false);
 

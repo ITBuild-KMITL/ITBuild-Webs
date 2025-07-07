@@ -5,11 +5,9 @@ import { drizzle } from "drizzle-orm/neon-http"
 import { account, session, user, verification } from "@/db/schema";
 
 
-
-export const auth = (env: CloudflareEnv) => {
-    const sql = neon(env.DATABASE_URL)
-    const db = drizzle(sql)
-    return betterAuth({
+const sql = neon(process.env.DATABASE_URL!)
+const db = drizzle(sql)
+export const auth = betterAuth({
         user: {
             additionalFields: {
                 firstNameTH: {
@@ -50,8 +48,8 @@ export const auth = (env: CloudflareEnv) => {
         emailAndPassword: {
             enabled: false
         },
-        baseURL: env.BETTER_AUTH_URL,
-        secret: env.BETTER_AUTH_SECRET,
+        baseURL: process.env.BETTER_AUTH_URL,
+        secret: process.env.BETTER_AUTH_SECRET,
         database: drizzleAdapter(db, {
             provider: "pg",
             schema: {
@@ -63,8 +61,8 @@ export const auth = (env: CloudflareEnv) => {
         }),
         socialProviders: {
             google: {
-                clientId: env.GOOGLE_CLIENT_ID!,
-                clientSecret: env.GOOGLE_CLIENT_SECRET!,
+                clientId: process.env.GOOGLE_CLIENT_ID!,
+                clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
                 mapProfileToUser: (profile) => {
                     const regex = /^\d{2}07\d{4}@kmitl\.ac\.th$/;
                     if (!regex.test(profile.email)) {
@@ -83,4 +81,4 @@ export const auth = (env: CloudflareEnv) => {
             },
         },
     });
-}
+

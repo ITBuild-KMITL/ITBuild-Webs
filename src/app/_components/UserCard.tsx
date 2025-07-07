@@ -16,7 +16,8 @@ import { Book, CircleQuestionMark, IdCard, LogOut, Mail } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
 export default function UserCard() {
-  const session = authClient.useSession();
+  const { useSession, signOut } = authClient;
+  const session = useSession();
 
   return (
     <Card className="max-w-sm w-full">
@@ -79,7 +80,7 @@ export default function UserCard() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={() => authClient.signOut()} variant={"destructive"} size={"lg"} className="w-full hover:cursor-pointer">
+        <Button onClick={() => signOut()} variant={"destructive"} size={"lg"} className="w-full hover:cursor-pointer">
           <LogOut />
           ออกจากระบบ
         </Button>
