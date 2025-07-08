@@ -17,6 +17,7 @@ import { authClient } from "@/lib/auth-client";
 import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
 import { CircleQuestionMark, DoorClosedLocked, DoorOpen } from "lucide-react";
+import Link from "next/link";
 
 export default function SignIn() {
 
@@ -38,7 +39,7 @@ export default function SignIn() {
       <CardHeader>
         <CardTitle>
           <h1 className="text-4xl font-inter font-bold">
-            {"<"}ITBuild{"/>"}
+            {"<"}Creasy{"/>"}
           </h1>
         </CardTitle>
         <CardDescription>
@@ -46,33 +47,35 @@ export default function SignIn() {
         </CardDescription>
       </CardHeader>
       <CardContent className="w-full">
-        {policyAccepted ? (
-          <Button
-            variant="default"
-            size={"lg"}
-            className="w-full mb-2 text-base hover:cursor-pointer"
-            onClick={signin}
-          >
-            <DoorOpen />
-            สมัครสมาชิกชุมนุม / เข้าสู่ระบบ
-          </Button>
-        ) : (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="secondary"
-                size={"lg"}
-                className="w-full mb-2 text-base cursor-not-allowed"
+        <div className="mb-2">
+          {policyAccepted ? (
+            <Button
+              variant="default"
+              size={"lg"}
+              className="w-full mb-2 text-base hover:cursor-pointer"
+              onClick={signin}
+            >
+              <DoorOpen />
+              สมัครสมาชิกชุมนุม / เข้าสู่ระบบ
+            </Button>
+          ) : (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="secondary"
+                  size={"lg"}
+                  className="w-full mb-2 text-base cursor-not-allowed"
                 >
                   <DoorClosedLocked />
-                สมัครสมาชิกชุมนุม / เข้าสู่ระบบ
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>คุณจำเป็นต้องยินยอมให้เราเก็บข้อมูลของท่าน</p>
-            </TooltipContent>
-          </Tooltip>
-        )}
+                  สมัครสมาชิกชุมนุม / เข้าสู่ระบบ
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>คุณจำเป็นต้องยินยอมให้เราเก็บข้อมูลของท่าน</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </div>
         <div className="flex items-center space-x-2">
           <Checkbox
             id="terms"
@@ -81,13 +84,20 @@ export default function SignIn() {
             }}
           />
           <Label htmlFor="terms" className="text-sm">
-            ข้าพเจ้ายินยอมให้ ITBuild เก็บข้อมูลส่วนบุคคล
+            ข้าพเจ้ายินยอมให้ ITBuild{" "}
+            <Link
+              href={"https://prepro.it.kmitl.ac.th/privacy-policy"}
+              target="_blank"
+              className="text-rose-500 underline"
+            >
+              เก็บข้อมูลส่วนบุคคล
+            </Link>
           </Label>
         </div>
       </CardContent>
       <CardFooter>
         <p className="text-zinc-500 text-sm flex items-center gap-2">
-          กรุณาใช้อีเมลาถาบันเพื่อรับสิทธิ์ระดับสมาชิก
+          กรุณาใช้อีเมลสถาบันเพื่อรับสิทธิ์ระดับสมาชิก
           <Tooltip>
             <TooltipTrigger>
               <CircleQuestionMark className="w-4 h-4 text-zinc-500" />

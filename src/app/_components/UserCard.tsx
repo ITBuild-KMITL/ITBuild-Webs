@@ -24,11 +24,11 @@ export default function UserCard() {
       <CardHeader>
         <CardTitle>
           <h1 className="text-4xl font-inter font-bold">
-            {"<"}ITBuild{"/>"}
+            {"<"}Creasy{"/>"}
           </h1>
         </CardTitle>
         <CardDescription>
-          <p>ระบบสมาชิก ITBuild</p>
+          <p>ระบบสมาชิก Creasy</p>
         </CardDescription>
       </CardHeader>
       <CardContent className="w-full space-y-4">
@@ -56,31 +56,44 @@ export default function UserCard() {
                 {session.data?.user.firstNameTH} {session.data?.user.lastNameTH}
               </p>
               <p className="text-sm text-muted-foreground">
-                {session.data?.user.firstNameEN}{" "}
-                {session.data?.user.lastNameEN}
+                {session.data?.user.firstNameEN} {session.data?.user.lastNameEN}
               </p>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <Mail />
             <div>
-              <p className="font-bold">
-                {session.data?.user.email}
-              </p>
+              <p className="font-bold">{session.data?.user.email}</p>
             </div>
           </div>
           <div className="flex items-center gap-4">
-             <Book />
+            <Book />
             <div>
               <p className="font-bold uppercase">
                 {session.data?.user.major || "ผู้เยี่ยมชม"}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {session.data?.user.major == "it"
+                  ? "เทคโนโลยีสารสนเทศ"
+                  : session.data?.user.major == "dsba"
+                  ? "วิทยาการข้อมูลและการวิเคราะห์ธุรกิจ"
+                  : session.data?.user.major == "ait"
+                  ? "เทคโนโลยีปัญญาประดิษฐ์"
+                  : session.data?.user.major == "itbuild"
+                  ? "ITBuild"
+                  : ""}
               </p>
             </div>
           </div>
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={() => signOut()} variant={"destructive"} size={"lg"} className="w-full hover:cursor-pointer">
+        <Button
+          onClick={() => signOut()}
+          variant={"destructive"}
+          size={"lg"}
+          className="w-full hover:cursor-pointer"
+        >
           <LogOut />
           ออกจากระบบ
         </Button>

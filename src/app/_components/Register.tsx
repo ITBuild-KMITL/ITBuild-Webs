@@ -93,7 +93,7 @@ export default function Register() {
       <CardHeader>
         <CardTitle>
           <h1 className="text-4xl font-inter font-bold">
-            {"<"}ITBuild{"/>"}
+            {"<"}Creasy{"/>"}
           </h1>
         </CardTitle>
         <CardDescription>
