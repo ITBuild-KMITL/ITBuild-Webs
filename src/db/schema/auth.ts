@@ -11,6 +11,8 @@ export const user = pgTable("user", {
 	role: text('role').notNull().default("member"),
 	stdId: text("std_id"),
 	major: text("major"),
+	year: integer("year"),
+	phone: text('phone'),
 	registered: boolean('registered').$defaultFn(() => false).notNull(),
 	emailVerified: boolean('email_verified').$defaultFn(() => false).notNull(),
 	image: text('image'),

@@ -45,15 +45,18 @@ const formSchema = z.object({
   firstNameEN: z.string().min(1, "กรุณากรอกชื่อภาษาอังกฤษ"),
   lastNameEN: z.string().min(1, "กรุณากรอกนามสกุลภาษาอังกฤษ"),
   major: z.string().min(1, "กรุณาเลือกสาขาวิชาที่เรียน"),
+  year: z.number({message:"กรุณาเลือกชั้นปีที่ศึกษา"}).min(1, "กรุณาเลือกชั้นปีที่ศึกษา").max(4, "ชั้นปีที่ศึกษาต้องไม่เกิน 4"),
+  phone: z
+    .string()
+    .regex(/^\d{10}$/, "หมายเลขโทรศัพท์ต้องมี 10 หลัก")
+    .optional(),
 });
 
 export default function Register() {
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const { useSession, signOut , updateUser } = authClient
-  const {
-    data: session,
-  } = useSession();
+  const { useSession, signOut, updateUser } = authClient;
+  const { data: session } = useSession();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,6 +65,7 @@ export default function Register() {
       firstNameEN: "",
       lastNameEN: "",
       major: "",
+      phone: "",
     },
     reValidateMode: "onChange",
     mode: "onChange",
@@ -76,7 +80,8 @@ export default function Register() {
       form.setValue("lastNameEN", session.user.lastNameEN || "");
       form.setValue("major", session.user.major || "");
     }
-    if(session?.user.role === "guest") {
+    if (session?.user.role === "guest") {
+      form.setValue("year", 0);
       form.setValue("major", "ผู้เยี่ยมชม");
     }
     setIsLoaded(true);
@@ -86,7 +91,7 @@ export default function Register() {
     updateUser({
       ...values,
       registered: true,
-    })
+    });
   }
   return (
     <Card className="max-w-sm w-full">
@@ -102,7 +107,10 @@ export default function Register() {
       </CardHeader>
 
       <CardContent className="w-full space-y-4">
-        <p className="max-w-full truncate text-sm text-zinc-500">คุณกำลังดำเนินการด้วย <span className="font-medium text-black">{session?.user.email}</span></p>
+        <p className="max-w-full truncate text-sm text-zinc-500">
+          คุณกำลังดำเนินการด้วย{" "}
+          <span className="font-medium text-black">{session?.user.email}</span>
+        </p>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {session?.user.stdId && (
@@ -170,37 +178,65 @@ export default function Register() {
               )}
             />
             {session?.user.role !== "guest" && (
-            <FormField
-              control={form.control}
-              name="major"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>สาขาวิชา</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="w-full max-w-full truncate">
-                        <SelectValue placeholder="เลือกสาขาวิชา" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="it">
-                        สาขาวิชาเทคโนโลยีสารสนเทศ (IT)
-                      </SelectItem>
-                      <SelectItem value="dsba">
-                        สาขาวิชาวิทยาการข้อมูลและการวิเคราะห์เชิงธุรกิจ (DSBA)
-                      </SelectItem>
-                      <SelectItem value="ait">
-                        สาขาวิชาเทคโนโลยีปัญญาประดิษฐ์ (AIT)
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <>
+                <FormField
+                  control={form.control}
+                  name="major"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>สาขาวิชา</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full max-w-full truncate">
+                            <SelectValue placeholder="เลือกสาขาวิชา" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="it">
+                            สาขาวิชาเทคโนโลยีสารสนเทศ (IT)
+                          </SelectItem>
+                          <SelectItem value="dsba">
+                            สาขาวิชาวิทยาการข้อมูลและการวิเคราะห์เชิงธุรกิจ
+                            (DSBA)
+                          </SelectItem>
+                          <SelectItem value="ait">
+                            สาขาวิชาเทคโนโลยีปัญญาประดิษฐ์ (AIT)
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="year"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>ชั้นปีที่ศึกษา</FormLabel>
+                      <Select
+                        onValueChange={(value) => field.onChange(Number(value))}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full max-w-full truncate">
+                            <SelectValue placeholder="เลือกชั้นปีที่ศึกษา" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="1">ปี 1</SelectItem>
+                          <SelectItem value="2">ปี 2</SelectItem>
+                          <SelectItem value="3">ปี 3</SelectItem>
+                          <SelectItem value="4">ปี 4</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
             )}
             {session?.user.role === "guest" && (
               <p>
@@ -210,11 +246,27 @@ export default function Register() {
                     <CircleQuestionMark className="inline h-4 w-4" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>บทบาทของคุณไม่สามารถสมัครสมาชิกชุมนุมได้ ตรวจสอบให้มั่นใจว่าคุณได้เข้าสู่ระบบดอีเมล @kmitl.ac.th</p>
+                    <p>
+                      บทบาทของคุณไม่สามารถสมัครสมาชิกชุมนุมได้
+                      ตรวจสอบให้มั่นใจว่าคุณได้เข้าสู่ระบบดอีเมล @kmitl.ac.th
+                    </p>
                   </TooltipContent>
                 </Tooltip>
               </p>
             )}
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>เบอร์โทรศัพท์</FormLabel>
+                  <FormControl>
+                    <Input placeholder="0812345678" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             {form.formState.isValid ? (
               <Button
                 type="submit"
@@ -223,7 +275,9 @@ export default function Register() {
                 size={"lg"}
               >
                 <Save />
-                {session?.user.role === "member" ? "สมัครสมาชิกชุมนุม" : "บันทึกข้อมูล"}
+                {session?.user.role === "member"
+                  ? "สมัครสมาชิกชุมนุม"
+                  : "บันทึกข้อมูล"}
               </Button>
             ) : (
               <Button
@@ -231,9 +285,11 @@ export default function Register() {
                 className="w-full hover:cursor-not-allowed"
                 variant={"secondary"}
                 size={"lg"}
-                >
-                  <Save />
-                {session?.user.role === "member" ? "สมัครสมาชิกชุมนุม" : "บันทึกข้อมูล"}
+              >
+                <Save />
+                {session?.user.role === "member"
+                  ? "สมัครสมาชิกชุมนุม"
+                  : "บันทึกข้อมูล"}
               </Button>
             )}
           </form>

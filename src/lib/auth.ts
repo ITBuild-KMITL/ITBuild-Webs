@@ -42,7 +42,15 @@ export const auth = betterAuth({
                 registered: {
                     type: "boolean",
                     defaultValue: false
-                }
+                },
+                year: {
+                    type: "number",
+                    required:false
+                },
+                phone: {
+                    type: "string",
+                    required:false
+                },
             }
         },
         emailAndPassword: {
