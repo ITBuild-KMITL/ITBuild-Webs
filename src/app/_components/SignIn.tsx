@@ -18,6 +18,7 @@ import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
 import { CircleQuestionMark, DoorClosedLocked, DoorOpen } from "lucide-react";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function SignIn() {
 
@@ -63,6 +64,13 @@ export default function SignIn() {
               <TooltipTrigger asChild>
                 <Button
                   variant="secondary"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toast.error("กรุณายอมรับนโยบายก่อนดำเนินการต่อ", {
+                      description:
+                        "กรุณาติ๊กถูกที่ช่องข้าพเจ้ายินยอมให้ Creasy เก็บข้อมูลส่วนบุคคล",
+                    });
+                  }}
                   size={"lg"}
                   className="w-full mb-2 text-base cursor-not-allowed"
                 >
@@ -84,7 +92,7 @@ export default function SignIn() {
             }}
           />
           <Label htmlFor="terms" className="text-sm">
-            ข้าพเจ้ายินยอมให้ ITBuild{" "}
+            ข้าพเจ้ายินยอมให้ Creasy{" "}
             <Link
               href={"https://prepro.it.kmitl.ac.th/privacy-policy"}
               target="_blank"
