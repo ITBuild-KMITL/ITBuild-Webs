@@ -38,7 +38,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 const formSchema = z.object({
   firstNameTH: z.string().min(1, "กรุณากรอกชื่อภาษาไทย"),
