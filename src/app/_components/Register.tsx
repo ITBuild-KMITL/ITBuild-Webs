@@ -177,6 +177,19 @@ export default function Register() {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>เบอร์โทรศัพท์</FormLabel>
+                  <FormControl>
+                    <Input placeholder="0812345678" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             {session?.user.role !== "guest" && (
               <>
                 <FormField
@@ -254,19 +267,7 @@ export default function Register() {
                 </Tooltip>
               </p>
             )}
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>เบอร์โทรศัพท์</FormLabel>
-                  <FormControl>
-                    <Input placeholder="0812345678" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
             {form.formState.isValid ? (
               <Button
                 type="submit"

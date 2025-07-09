@@ -14,8 +14,20 @@ const ibm = IBM_Plex_Sans_Thai({
 });
 
 export const metadata: Metadata = {
-  title: "IT Build | Build your own IT",
-  description: "ชุมนุมคณะเทคโนโลยี สจล.",
+  title: "Creasy | Build your own IT",
+  description: "ศูนย์กลางเทคโนโลยี ไอทีลาดกระบัง | ชุมนุมคณะเทคโนโลยีสารสนเทศ สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง",
+  openGraph: {
+    type: "website",
+    title: "Creasy | ชมรมเทคโนโลยี IT KMITL",
+    description: "ศูนย์กลางเทคโนโลยี ไอทีลาดกระบัง | ชุมนุมคณะเทคโนโลยีสารสนเทศ สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง",
+    url: "https://creasy.kmitl.ac.th",
+    siteName: "Creasy",
+    images: [
+      "https://creasy.it22.dev/images/ci/opengraph.jpg",
+    ],
+    locale: "th_TH",
+    countryName: "Thailand",
+  }
 };
 
 export default function RootLayout({
