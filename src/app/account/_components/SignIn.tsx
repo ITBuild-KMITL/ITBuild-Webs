@@ -37,7 +37,7 @@ export default function SignIn() {
   async function signin() {
     try {
       await setLoading(true);
-      const data = await signIn.social({ provider: "google" });
+      const data = await signIn.social({ provider: "google" ,callbackURL:"/account" });
       console.log(data);
     } catch (e) {
       if (e instanceof BetterAuthError) {
