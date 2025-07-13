@@ -24,7 +24,7 @@ export const metadata: Metadata = {
       "ศูนย์กลางเทคโนโลยี ไอทีลาดกระบัง | ชุมนุมคณะเทคโนโลยีสารสนเทศ สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง",
     url: "https://creasy.kmitl.ac.th",
     siteName: "Creasy",
-    images: ["https://creasy.it22.dev/images/ci/opengraph.jpg"],
+    images: ["https://creasy.club/images/ci/opengraph.jpg"],
     locale: "th_TH",
     countryName: "Thailand",
   },
