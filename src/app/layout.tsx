@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: "Creasy | ชุมนุมเทคโนโลยี IT KMITL",
     description:
       "ศูนย์กลางเทคโนโลยี ไอทีลาดกระบัง | ชุมนุมคณะเทคโนโลยีสารสนเทศ สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง",
-    url: "https://creasy.kmitl.ac.th",
+    url: "https://creasy.club",
     siteName: "Creasy",
     images: ["https://creasy.club/images/ci/opengraph.jpg"],
     locale: "th_TH",
