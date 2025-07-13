@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,22 +18,40 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { authClient } from "@/lib/auth-client";
 import { Label } from "@radix-ui/react-label";
 import { useState } from "react";
-import { CircleQuestionMark, DoorClosedLocked, DoorOpen } from "lucide-react";
+import {
+  CircleQuestionMark,
+  DoorClosedLocked,
+  DoorOpen,
+  Loader2,
+} from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { BetterAuthError } from "better-auth";
 
 export default function SignIn() {
-
-  const { signIn } = authClient
+  const { signIn } = authClient;
 
   const [policyAccepted, setPolicyAccepted] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   async function signin() {
     try {
+      await setLoading(true);
       const data = await signIn.social({ provider: "google" });
       console.log(data);
     } catch (e) {
-      alert(e);
+      if (e instanceof BetterAuthError) {
+        toast.error("เกิดข้อผิดพลาดการเข้าสู่ระบบ", {
+          description: `รหัสข้อผิดพลาด ${e.message}`,
+        });
+        return;
+      }
+      toast.error("เกิดข้อผิดพลาดเกี่ยวกับระบบ", {
+        description: "เกิดข้อผิดพลาดกับระบบโปรดติดต่อผู้ดูแล",
+      });
+      console.log(e);
+    } finally {
+      await setLoading(false);
     }
   }
 
@@ -56,7 +76,7 @@ export default function SignIn() {
               className="w-full mb-2 text-base hover:cursor-pointer"
               onClick={signin}
             >
-              <DoorOpen />
+              {isLoading ? <Loader2 className="animate-spin" /> : <DoorOpen />}
               สมัครสมาชิกชุมนุม / เข้าสู่ระบบ
             </Button>
           ) : (

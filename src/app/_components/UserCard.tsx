@@ -12,12 +12,19 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Book, CircleQuestionMark, IdCard, LogOut, Mail } from "lucide-react";
+import { Book, CircleQuestionMark, IdCard, Loader2, LogOut, Mail } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
+import { useState } from "react";
 
 export default function UserCard() {
+  const [ isLogoutLoading, setIsLogoutLoading ] = useState(false)
   const { useSession, signOut } = authClient;
   const session = useSession();
+  async function handleLogout() {
+    await setIsLogoutLoading(true)
+    await signOut()
+    await setIsLogoutLoading(false)
+  }
 
   return (
     <Card className="max-w-sm w-full">
@@ -89,12 +96,13 @@ export default function UserCard() {
       </CardContent>
       <CardFooter>
         <Button
-          onClick={() => signOut()}
+          onClick={handleLogout}
+          disabled={isLogoutLoading}
           variant={"destructive"}
           size={"lg"}
           className="w-full hover:cursor-pointer"
         >
-          <LogOut />
+          {isLogoutLoading ? <Loader2 className="animate-spin" /> : <LogOut />}
           ออกจากระบบ
         </Button>
       </CardFooter>

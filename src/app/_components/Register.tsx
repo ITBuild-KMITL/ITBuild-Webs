@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/tooltip";
 import { authClient } from "@/lib/auth-client";
 import { useEffect, useState } from "react";
-import { CircleQuestionMark, LogOut, Save } from "lucide-react";
+import { CircleQuestionMark, Loader2, LogOut, Save } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -38,6 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   firstNameTH: z.string().min(1, "กรุณากรอกชื่อภาษาไทย"),
@@ -45,7 +46,7 @@ const formSchema = z.object({
   firstNameEN: z.string().min(1, "กรุณากรอกชื่อภาษาอังกฤษ"),
   lastNameEN: z.string().min(1, "กรุณากรอกนามสกุลภาษาอังกฤษ"),
   major: z.string().min(1, "กรุณาเลือกสาขาวิชาที่เรียน"),
-  year: z.number({message:"กรุณาเลือกชั้นปีที่ศึกษา"}).min(1, "กรุณาเลือกชั้นปีที่ศึกษา").max(4, "ชั้นปีที่ศึกษาต้องไม่เกิน 4"),
+  year: z.number({message:"กรุณาเลือกชั้นปีที่ศึกษา"}).min(0, "กรุณาเลือกชั้นปีที่ศึกษา").max(4, "ชั้นปีที่ศึกษาต้องไม่เกิน 4").optional().nullable(),
   phone: z
     .string()
     .regex(/^\d{10}$/, "หมายเลขโทรศัพท์ต้องมี 10 หลัก")
@@ -54,8 +55,10 @@ const formSchema = z.object({
 
 export default function Register() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [ isSignOutLoading, setSignOutLoading ] = useState(false);
+  const [ isSubmitLoading, setSubmitLoading ] = useState(false);
 
-  const { useSession, signOut, updateUser } = authClient;
+  const { useSession, signOut: signout , updateUser } = authClient;
   const { data: session } = useSession();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -87,12 +90,30 @@ export default function Register() {
     setIsLoaded(true);
   }, [session]);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    updateUser({
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    await setSubmitLoading(true)
+    await updateUser({
       ...values,
       registered: true,
     });
+    await setSubmitLoading(false)
   }
+
+  async function signOut() { 
+    await setSignOutLoading(true);
+    try {
+      await signout()
+    }
+    catch (error) { 
+      toast.error("เกิดข้อผิดพลาดในการออกจากระบบ", {
+        description: "โปรดลองอีกครั้งในภายหลัง หรือรีโหลดหน้าเว็บ",
+    });
+    }
+    finally {
+      await setSignOutLoading(false);
+    }
+  }
+
   return (
     <Card className="max-w-sm w-full">
       <CardHeader>
@@ -274,8 +295,9 @@ export default function Register() {
                 className="w-full hover:cursor-pointer"
                 variant={"default"}
                 size={"lg"}
+                disabled={isSubmitLoading}
               >
-                <Save />
+                {isSubmitLoading ? <Loader2 className="animate-spin" /> : <Save />}
                 {session?.user.role === "member"
                   ? "สมัครสมาชิกชุมนุม"
                   : "บันทึกข้อมูล"}
@@ -304,7 +326,11 @@ export default function Register() {
           className="w-full hover:cursor-pointer"
           onClick={() => signOut()}
         >
-          <LogOut />
+          {isSignOutLoading ? (
+            <Loader2 className="animate-spin" />
+          ) : (
+            <LogOut />
+          )}
           ออกจากระบบ
         </Button>
       </CardFooter>
