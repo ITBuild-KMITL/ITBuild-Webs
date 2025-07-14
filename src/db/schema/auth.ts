@@ -16,6 +16,12 @@ export const user = pgTable("user", {
 	registered: boolean('registered').$defaultFn(() => false).notNull(),
 	emailVerified: boolean('email_verified').$defaultFn(() => false).notNull(),
 	image: text('image'),
+	discordEmail:text('discord_email'),
+	discordId:text('discord_id'),
+	discordAvaterImage:text("discord_avater_image"),
+	discordUsername:text("discord_username"),
+	discordName:text("discord_name"),
+	isDiscordConnect:boolean("is_discord_connect").default(false),
 	createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull(),
 	updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull()
 });
