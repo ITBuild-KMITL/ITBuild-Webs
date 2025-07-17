@@ -4,8 +4,29 @@ import SignIn from "./_components/SignIn";
 import { Card } from "@/components/ui/card";
 import Register from "./_components/Register";
 import UserCard from "./_components/UserCard";
+import { useSearchParams } from 'next/navigation'
+import { useEffect } from "react";
+import { toast } from "sonner";
+
 
 export default function Home() {
+  const searchParams = useSearchParams()
+
+  useEffect(()=>{
+    const error = searchParams.get('error')
+    const error_description = searchParams.get('error_description')
+ 
+    if(error || error_description){
+      let description = `รหัสข้อผิดพลาด ${error}`
+      if(error_description != "undefined"){
+        description += ` | ${error_description}`
+      }
+      toast.error("เกิดข้อผิดพลาด โปรดลองอีกครั้ง",{
+        description
+      })
+    }
+  },[searchParams])
+
   const { useSession } = authClient;
   const {
     data: session,

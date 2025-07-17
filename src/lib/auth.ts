@@ -3,7 +3,7 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { drizzle } from "drizzle-orm/neon-http"
 import { account, session, user, verification } from "@/db/schema";
-
+import { nextCookies } from "better-auth/next-js";
 
 const sql = neon(process.env.DATABASE_URL!)
 const db = drizzle(sql)
@@ -52,37 +52,43 @@ export const auth = betterAuth({
                 required: false
             },
             discordEmail: {
-                type:"string",
-                required:false,
-                input:false
+                type: "string",
+                required: false,
+                input: false
             },
             discordId: {
-                type:"string",
-                required:false,
-                input:false
+                type: "string",
+                required: false,
+                input: false
             },
             discordAvaterImage: {
-                type:"string",
-                required:false,
-                input:false
+                type: "string",
+                required: false,
+                input: false
             },
             discordUsername: {
-                type:"string",
-                required:false,
-                input:false
+                type: "string",
+                required: false,
+                input: false
             },
             discordName: {
-                type:"string",
-                required:false,
-                input:false
+                type: "string",
+                required: false,
+                input: false
             },
             isDiscordConnect: {
-                type:"boolean",
-                required:true,
-                defaultValue:false,
-                input:false
+                type: "boolean",
+                required: true,
+                defaultValue: false,
+                input: false
             }
 
+        }
+    },
+    account: {
+        accountLinking: {
+            updateUserInfoOnLink: true,
+            allowDifferentEmails: true
         }
     },
     emailAndPassword: {
@@ -118,21 +124,28 @@ export const auth = betterAuth({
                     lastNameEN: profile.family_name,
                 }
             },
+
         },
         discord: {
             clientId: process.env.DISCORD_CLIENT_ID!,
             clientSecret: process.env.DISCORD_CLIENT_SECRET!,
-            mapProfileToUser: (discord) => {
-                return {
-                    discordEmail: discord.email,
-                    discordId: discord.id,
-                    discordAvaterImage: discord.image_url,
-                    discordUsername: discord.username,
-                    discordName: discord.display_name,
-                    isDiscordConnect: true
-                }
-            }
+            overrideUserInfoOnSignIn: true,
+
+            mapProfileToUser: (discord) => ({
+                discordEmail: discord.email,
+                discordId: discord.id,
+                discordAvaterImage: discord.image_url,
+                discordUsername: discord.username,
+                discordName: discord.display_name,
+                isDiscordConnect: true
+            }),
         }
     },
+    onAPIError:{
+        errorURL:"/account"
+    },
+    plugins: [
+        nextCookies()
+    ]
 });
 
