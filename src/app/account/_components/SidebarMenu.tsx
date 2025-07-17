@@ -44,7 +44,7 @@ export default function SidebarMenu() {
     ]
 
     return (
-        <Card className="md:max-w-sm w-full w-full h-fit">    
+        <Card className="md:max-w-sm w-full h-fit">    
             <CardHeader>
                 <CardTitle>
                     <h1 className="text-2xl font-bold">
