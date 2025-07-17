@@ -13,7 +13,7 @@ export default function AccountLayout({ children }: { children: React.ReactNode 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-dvh p-4 relative">``
+    <div className="flex flex-col items-center justify-center min-h-dvh p-4 relative">
       <div className="absolute top-0 left-0 w-full h-full bg-linear-to-r/increasing from-indigo-200 to-teal-200 opacity-60 -z-10" />
       <div className="container mb-4">
         <Card className="w-full">

@@ -17,19 +17,22 @@ import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import SidebarMenu from "./SidebarMenu";
 
-export default function UserCard() {
-    const [isLogoutLoading, setIsLogoutLoading] = useState(false)
-    const { useSession, signOut } = authClient;
-    const session = useSession();
-    async function handleLogout() {
-      await setIsLogoutLoading(true)
-      await signOut()
-      await setIsLogoutLoading(false)
-    }
+export default function UserCard({ isMenuOpen }: { isMenuOpen: boolean }) {
+
+  const [isLogoutLoading, setIsLogoutLoading] = useState(false)
+  const { useSession, signOut } = authClient;
+  const session = useSession();
+  async function handleLogout() {
+    await setIsLogoutLoading(true)
+    await signOut()
+    await setIsLogoutLoading(false)
+  }
 
   return (
-    <div className="w-full container h-full flex-1 flex gap-4 flex-nowrap">
-      <SidebarMenu />
+    <div className="w-full md:flex-row flex-col container h-full flex-1 flex gap-4 flex-nowrap">
+      <div className={`md:max-w-sm w-full md:block ${isMenuOpen ? "block" : "hidden"}`}>
+        <SidebarMenu />
+      </div>
       <Card className="flex-1 h-fit">
         <CardHeader>
           <CardTitle>

@@ -11,7 +11,6 @@ import { FaDiscord } from "react-icons/fa";
 import { toast } from "sonner";
 import AccountCard from "./_components/AccoutCard";
 import axios from "axios";
-import Link from "next/link";
 
 export default function Page() {
 
